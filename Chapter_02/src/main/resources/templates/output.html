@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" >
+<div th:insert="~{top :: top}"></div>
+
+<head>
+    <style>
+        ul {
+ text-align:center;
+ margin-top: 20px;
+ }
+ ul li {
+ list-style-type: none;
+ display: inline-block;
+ margin-right: 10px;
+ }
+ .pagination{
+ margin : 0 auto;
+ width:100%;
+ }
+div.pp{
+color: blue;
+}
+
+    </style>
+
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <h2 th:text="${'출력'}"></h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>상품번호</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>가격</th>
+            <th>총합</th>
+            <th>이미지</th>
+            <th>비고</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list}">
+            <td th:text="${item.snumber}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.amount}"></td>
+            <td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')}"></td>
+            <td th:text="${#numbers.formatInteger(item.total, 1, 'COMMA')}"></td>
+            <td><img th:src="@{./img/}+${item.picture}" alt="" width="100px" height="80px">  </td>
+            <td>
+                <button type="button" class="btn btn-success" th:onclick="|javascript:location.href='@{modify(snumber=${item.snumber})}'|">수정</button>
+                <button type="button" class="btn btn-success" th:onclick="|javascript:location.href='@{delete(snumber=${item.snumber})}'|">삭제</button>
+            </td>
+        </tr>
+       </tbody>
+   </table>
+</div>
+
+
+<div class="pagination">
+    <ul>
+        <li th:each="page : ${#numbers.sequence(0, totalPage -1)}">
+      <span th:if="${nowpage == pageStat.index}" style="color:red">
+        <a th:href="@{/output(page=${pageStat.index})}" th:text="${pageStat.index+1}"></a>
+
+      </span>
+            <div th:if="${nowpage != pageStat.index}" >
+                <a th:href="@{/output(page=${pageStat.index})}" th:text="${pageStat.index+1}"></a>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+
+</html>
